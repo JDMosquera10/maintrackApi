@@ -215,6 +215,7 @@ export class DashboardService implements IDashboardService {
 
       return {
         id: maintenance._id.toString(),
+        maintenanceId: maintenance._id.toString(),
         machineId: machine._id.toString(),
         machineModel: machine.model,
         machineSerial: machine.serialNumber,
@@ -223,7 +224,10 @@ export class DashboardService implements IDashboardService {
         daysRemaining,
         maintenanceType: maintenance.type,
         priority,
-        location: machine.location
+        location: machine.location,
+        technicianId: maintenance.technicianId.toString(),
+        spareParts: maintenance.spareParts || [],
+        observations: maintenance.observations || undefined
       };
     });
   }

@@ -41,6 +41,12 @@ class WebSocketManager {
       this.webSocketService.broadcastMaintenanceUpdate(maintenanceId, action, data);
     }
   }
+
+  public broadcastMaintenanceAlerts(alerts: any[]): void {
+    if (this.webSocketService) {
+      this.webSocketService.broadcastMaintenanceAlerts(alerts);
+    }
+  }
 }
 
 export default WebSocketManager.getInstance();

@@ -108,6 +108,7 @@ export interface DashboardCharts {
 
 export interface MaintenanceAlert {
   id: string;
+  maintenanceId: string;
   machineId: string;
   machineModel: string;
   machineSerial: string;
@@ -117,6 +118,9 @@ export interface MaintenanceAlert {
   maintenanceType: string;
   priority: 'low' | 'medium' | 'high' | 'critical';
   location: string;
+  technicianId: string;
+  spareParts: string[];
+  observations?: string;
 }
 
 export interface RecentMachine {
@@ -143,6 +147,8 @@ export enum WebSocketEventType {
   DASHBOARD_UPDATE = 'dashboard_update',
   MACHINE_STATUS_UPDATE = 'machine_status_update',
   MAINTENANCE_UPDATE = 'maintenance_update',
+  MAINTENANCE_ALERT = 'maintenance_alert',
+  UPCOMING_MAINTENANCE_ALERTS = 'upcoming_maintenance_alerts',
   CONNECTION_ESTABLISHED = 'connection_established',
   PING = 'ping',
   PONG = 'pong'

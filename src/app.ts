@@ -9,13 +9,17 @@ import maintenanceRoutes from './routes/maintenances';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/users';
 import dashboardRoutes from './routes/dashboard';
+import cronRoutes from './routes/cron';
+import testRoutes from './routes/test';
 
 // Importar configuración de base de datos
 import databaseConnection from './config/database';
 
-// Importar servicio WebSocket
+// Importar servicios
 import { WebSocketService } from './services/WebSocketService';
 import WebSocketManager from './utils/WebSocketManager';
+import { CronService } from './services/CronService';
+import { RedisService } from './services/RedisService';
 
 dotenv.config();
 
@@ -24,6 +28,7 @@ class App {
   private server: any;
   private port: number;
   private webSocketService: WebSocketService | null = null;
+  private cronService: CronService | null = null;
 
   constructor() {
     this.app = express();
@@ -58,6 +63,8 @@ class App {
     this.app.use('/api/machines', machineRoutes);
     this.app.use('/api/maintenances', maintenanceRoutes);
     this.app.use('/api/dashboard', dashboardRoutes);
+    this.app.use('/api/cron', cronRoutes);
+    this.app.use('/api/test', testRoutes);
 
     // Middleware de health check
     this.app.get('/health', (req, res) => {
@@ -114,16 +121,28 @@ class App {
       // Conectar a la base de datos
       await databaseConnection.connect();
 
+      // Inicializar Redis Service
+      const redisService = RedisService.getInstance();
+      console.log('🔗 Redis service inicializado');
+
       // Inicializar WebSocket Service
       this.webSocketService = new WebSocketService(this.server);
       WebSocketManager.setWebSocketService(this.webSocketService);
 
+      // Inicializar Cron Service
+      this.cronService = new CronService();
+      
+      // Iniciar tareas programadas automáticamente
+      this.cronService.startAllJobs();
+
       // Iniciar el servidor
       this.server.listen(this.port, () => {
-        console.log(`Server running on port ${this.port}`);
-        console.log(`Health check: http://localhost:${this.port}/health`);
-        console.log(`API Documentation: http://localhost:${this.port}/`);
-        console.log(`WebSocket server: ws://localhost:${this.port}/ws`);
+        console.log(`🚀 Server running on port ${this.port}`);
+        console.log(`🏥 Health check: http://localhost:${this.port}/health`);
+        console.log(`📚 API Documentation: http://localhost:${this.port}/`);
+        console.log(`🔌 WebSocket server: ws://localhost:${this.port}/ws`);
+        console.log(`⏰ Cron jobs iniciados automáticamente`);
+        console.log(`📊 Cron API: http://localhost:${this.port}/api/cron`);
       });
     } catch (error) {
       console.error('Failed to start server:', error);
@@ -133,15 +152,24 @@ class App {
 
   public async stop(): Promise<void> {
     try {
+      // Detener tareas programadas
+      if (this.cronService) {
+        this.cronService.stopAllJobs();
+      }
+
       // Cerrar conexiones WebSocket
       if (this.webSocketService) {
         this.webSocketService.close();
       }
+
+      // Cerrar conexión Redis
+      const redisService = RedisService.getInstance();
+      await redisService.disconnect();
       
       await databaseConnection.disconnect();
-      console.log('Server stopped gracefully');
+      console.log('✅ Server stopped gracefully');
     } catch (error) {
-      console.error('Error stopping server:', error);
+      console.error('❌ Error stopping server:', error);
     }
   }
 

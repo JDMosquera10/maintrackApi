@@ -149,6 +149,21 @@ export class WebSocketService {
   }
 
   /**
+   * Envía alertas de mantenimiento próximas a vencer
+   */
+  public broadcastMaintenanceAlerts(alerts: any[]): void {
+    this.broadcast({
+      type: WebSocketEventType.UPCOMING_MAINTENANCE_ALERTS,
+      data: {
+        alerts,
+        count: alerts.length,
+        timestamp: new Date()
+      },
+      timestamp: new Date()
+    });
+  }
+
+  /**
    * Obtiene el número de clientes conectados
    */
   public getConnectedClientsCount(): number {
