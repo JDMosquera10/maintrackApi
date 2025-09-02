@@ -152,7 +152,7 @@ export class CronService {
    */
   private sendMaintenanceAlerts(alerts: MaintenanceAlert[]): void {
     WebSocketManager.broadcastMaintenanceAlerts(alerts);
-    console.log(`📡 ${alerts.length} alertas enviadas por WebSocket`);
+    console.log(` ${alerts.length} alertas enviadas por WebSocket`);
   }
 
   /**
@@ -163,7 +163,7 @@ export class CronService {
     alertsFound: number;
     executionTime: number;
   }> {
-    console.log('🔧 Ejecutando verificación manual...');
+    console.log('Ejecutando verificación manual...');
     const startTime = Date.now();
 
     await this.checkUpcomingMaintenances();

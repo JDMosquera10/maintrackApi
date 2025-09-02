@@ -48,8 +48,8 @@ router.post('/maintenance-alerts', (req, res) => {
     // Enviar alertas por WebSocket
     WebSocketManager.broadcastMaintenanceAlerts(testAlerts);
 
-    console.log(`📡 ${testAlerts.length} alertas de prueba enviadas por WebSocket`);
-    console.log('📡 Estructura enviada:', {
+    console.log(` ${testAlerts.length} alertas de prueba enviadas por WebSocket`);
+    console.log(' Estructura enviada:', {
       type: 'upcoming_maintenance_alerts',
       data: {
         alerts: testAlerts,
@@ -137,7 +137,7 @@ router.post('/dashboard-update', (req, res) => {
     // Enviar actualización por WebSocket
     WebSocketManager.broadcastDashboardUpdate(testData);
 
-    console.log('📡 Actualización del dashboard enviada por WebSocket');
+    console.log(' Actualización del dashboard enviada por WebSocket');
 
     res.json({
       success: true,
