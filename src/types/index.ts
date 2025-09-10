@@ -7,11 +7,6 @@ export enum UserRole {
   COORDINATOR = 'coordinator'
 }
 
-export enum MaintenanceType {
-  PREVENTIVE = 'preventive',
-  CORRECTIVE = 'corrective'
-}
-
 export enum MachineStatus {
   OPERATIONAL = 'operational',
   MAINTENANCE = 'maintenance',
@@ -47,10 +42,22 @@ export interface Machine extends BaseEntity {
   status: MachineStatus;
 }
 
+export interface State extends BaseEntity {
+  name: string;
+  isActive: boolean;
+}
+
+export interface TypeMaintenance extends BaseEntity {
+  name: string;
+  description: string;
+  isActive: boolean;
+  States: State[];
+}
+
 export interface Maintenance extends BaseEntity {
   machineId: string;
   date: Date;
-  type: MaintenanceType;
+  type: TypeMaintenance;
   spareParts: string[];
   technicianId: string;
   workHours?: number;

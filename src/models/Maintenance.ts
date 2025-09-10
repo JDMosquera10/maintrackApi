@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import { MaintenanceType } from '../types';
 
 const maintenanceSchema = new Schema({
   machineId: {
@@ -7,14 +6,14 @@ const maintenanceSchema = new Schema({
     ref: 'Machine',
     required: true
   },
-  date: {
+  dateEnd: {
     type: Date,
     required: true,
     default: Date.now
   },
-  type: {
-    type: String,
-    enum: Object.values(MaintenanceType),
+  typeId: {
+    type: Schema.Types.ObjectId,
+    ref: 'TypeMaintenance',
     required: true
   },
   spareParts: [{
@@ -47,6 +46,7 @@ const maintenanceSchema = new Schema({
 
 maintenanceSchema.index({ machineId: 1 });
 maintenanceSchema.index({ technicianId: 1 });
+maintenanceSchema.index({ typeId: 1 });
 maintenanceSchema.index({ date: 1 });
 maintenanceSchema.index({ isCompleted: 1 });
 maintenanceSchema.index({ type: 1 });
