@@ -24,6 +24,10 @@ const machineSchema = new Schema({
     required: true,
     trim: true
   },
+  companyId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Company'
+  },
   location: {
     type: String,
     required: true,
@@ -39,9 +43,10 @@ const machineSchema = new Schema({
   timestamps: true
 });
 
-// Índices para mejorar el rendimiento
+
 machineSchema.index({ client: 1 });
+machineSchema.index({ companyId: 1 });
 machineSchema.index({ status: 1 });
 machineSchema.index({ location: 1 });
 
-export const MachineModel = mongoose.model('Machine', machineSchema); 
+export const MachineModel = mongoose.model('Machine', machineSchema);

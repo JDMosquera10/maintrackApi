@@ -1,7 +1,10 @@
 export enum UserRole {
+  ADMIN = 'admin',
+  CLIENT = 'client',
+  OPERATOR = 'operator',
+  SUPERVISOR = 'supervisor',
   TECHNICIAN = 'technician',
-  COORDINATOR = 'coordinator',
-  ADMIN = 'admin'
+  COORDINATOR = 'coordinator'
 }
 
 export enum MaintenanceType {
@@ -29,6 +32,8 @@ export interface User extends BaseEntity {
   firstName: string;
   lastName: string;
   role: UserRole;
+  roleId?: string; // Reference to Role model
+  companyId?: string; // Reference to Company model
   isActive: boolean;
 }
 
@@ -37,6 +42,7 @@ export interface Machine extends BaseEntity {
   serialNumber: string;
   usageHours: number;
   client: string;
+  companyId?: string;
   location: string;
   status: MachineStatus;
 }
@@ -158,4 +164,29 @@ export interface DashboardWebSocketEvent {
   type: WebSocketEventType | string;
   data: any;
   timestamp: Date;
-} 
+}
+
+// New Entity Types
+export interface Role extends BaseEntity {
+  name: string;
+  description?: string;
+  permissions: string[]; // Array of permission IDs
+  isActive: boolean;
+}
+
+export interface Permission extends BaseEntity {
+  name: string;
+  description?: string;
+  resource: string; // e.g., 'machines', 'users', 'maintenances'
+  action: string; // e.g., 'create', 'read', 'update', 'delete'
+  isActive: boolean;
+}
+
+export interface Company extends BaseEntity {
+  name: string;
+  description?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  isActive: boolean;
+}

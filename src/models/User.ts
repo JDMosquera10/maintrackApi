@@ -37,7 +37,7 @@ const userSchema = new Schema({
 }, {
   timestamps: true,
   toJSON: {
-    transform: function(doc: any, ret: any) {
+    transform: function (doc: any, ret: any) {
       if (ret.password) {
         delete ret.password;
       }
@@ -46,8 +46,10 @@ const userSchema = new Schema({
   }
 });
 
-// Índices para mejorar el rendimiento
+
 userSchema.index({ role: 1 });
+userSchema.index({ roleId: 1 });
+userSchema.index({ companyId: 1 });
 userSchema.index({ isActive: 1 });
 
-export const UserModel = mongoose.model('User', userSchema); 
+export const UserModel = mongoose.model('User', userSchema);

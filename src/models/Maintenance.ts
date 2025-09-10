@@ -45,11 +45,10 @@ const maintenanceSchema = new Schema({
   timestamps: true
 });
 
-// Índices para mejorar el rendimiento
 maintenanceSchema.index({ machineId: 1 });
 maintenanceSchema.index({ technicianId: 1 });
 maintenanceSchema.index({ date: 1 });
 maintenanceSchema.index({ isCompleted: 1 });
 maintenanceSchema.index({ type: 1 });
 
-export const MaintenanceModel = mongoose.model('Maintenance', maintenanceSchema); 
+export const MaintenanceModel = mongoose.model('Maintenance', maintenanceSchema);

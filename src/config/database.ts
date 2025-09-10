@@ -1,15 +1,14 @@
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://jhonatandmosqueraa:Larasosfre123@clusterjhonatan.vvsjrbr.mongodb.net/?retryWrites=true&w=majority&appName=clusterJhonatan';
-
+const MONGODB_URI = process.env.MONGODB_URI || '';
 export class DatabaseConnection {
   private static instance: DatabaseConnection;
   private isConnected = false;
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): DatabaseConnection {
     if (!DatabaseConnection.instance) {
@@ -54,4 +53,4 @@ export class DatabaseConnection {
   }
 }
 
-export default DatabaseConnection.getInstance(); 
+export default DatabaseConnection.getInstance();
